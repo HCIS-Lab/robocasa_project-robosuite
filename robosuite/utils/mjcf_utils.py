@@ -757,7 +757,7 @@ def find_parent(root, child):
     # If we get here, we didn't find anything ):
     return None
 
-
+import logging # changed
 def find_elements(root, tags, attribs=None, return_first=True):
     """
     Find all element(s) matching the requested @tag and @attributes. If @return_first is True, then will return the
@@ -775,6 +775,11 @@ def find_elements(root, tags, attribs=None, return_first=True):
     Returns:
         None or ET.Element or list of ET.Element: Matching element(s) found. Returns None if there was no match.
     """
+    # changed
+    logging.basicConfig(level=logging.INFO, filename="logger.log", filemode="w", 
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    datefmt='%Y/%m/%d %H:%M:%S')
+    
     # Initialize return value
     elements = None if return_first else []
 
@@ -806,6 +811,12 @@ def find_elements(root, tags, attribs=None, return_first=True):
             pre_elements = deepcopy(elements)
             if found_elements:
                 elements += found_elements if type(found_elements) is list else [found_elements]
+
+    # changed
+    # if elements:
+    #     print("found element")
+    # else:
+    #     print("element not found")
 
     return elements if elements else None
 
