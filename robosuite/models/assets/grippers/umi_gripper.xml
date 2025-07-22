@@ -40,7 +40,8 @@
     </tendon>
 
     <worldbody>
-        <body quat="0 0 0.707107 -0.707107" pos="0 0 0">
+        <!-- <body quat="0 0 0.707107 -0.707107" pos="0 0 0"> -->
+        <body quat="0 0.707107 -0.707107 0" pos="0 0 0">
             <!-- TODO inertial -->
             <site name="ft_frame" pos="0 0.047 0.0296" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
             <!-- Gripper Camera -->
@@ -57,7 +58,8 @@
                 quat="0.392847 0.392847 0.587938 0.587938" material="mirror" class="visual" />
 
             <!-- This site was added for visualization. -->
-            <body name="eef" pos="0 -0.18 0" quat="0 0 -0.707107 0.707107">
+            <!-- <body name="eef" pos="0 -0.18 0" quat="0 0 -0.707107 0.707107"> -->
+            <body name="eef" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
                 <site name="grip_site" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 0.5" type="sphere" group="1"/>
                 <site name="ee_x" pos="0.1 0 0" size="0.005 .1"  quat="0.707105  0 0.707108 0 " rgba="1 0 0 0" type="cylinder" group="1"/>
                 <site name="ee_y" pos="0 0.1 0" size="0.005 .1" quat="0.707105 0.707108 0 0" rgba="0 1 0 0" type="cylinder" group="1"/>
@@ -82,11 +84,11 @@
                 <geom mesh="left_finger_holder" class="visual" material="gray" />
                 <!-- <geom mesh="left_finger_holder" class="collision" /> -->
                 <geom mesh="left_finger" pos="0 -0.1007 0.0127" quat="-0 -0 0.707107 0.707107" class="visual" material="orange" />
-                <!-- <geom mesh="left_finger" pos="0 -0.1007 0.0127" quat="-0 -0 0.707107 0.707107" class="collision" /> -->
+                <geom mesh="left_finger" pos="0 -0.1007 0.0127" quat="-0 -0 0.707107 0.707107" conaffinity="1" contype="0" solref="0.02 1" friction="1 0.005 0.0001" condim="4" class="collision" name="left_finger_collision" />
                 
                 <body name="left_finger_tip" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
                     <inertial pos="0 0 0" mass="0.01" diaginertia="0.01 0.01 0.01" />
-                    <geom size="0.024 0.004 0.012" pos="0 0.003 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="left_finger_pad_collision"/>
+                    <geom size="0.024 0.004 0.012" pos="0 0.005 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="left_finger_pad_collision"/>
                 </body>
             </body>
 
@@ -98,11 +100,11 @@
                 <geom mesh="right_finger_holder" class="visual" material="gray" />
                 <!-- <geom mesh="right_finger_holder" class="collision" /> -->
                 <geom mesh="right_finger" pos="0 -0.1007 -0.0131" quat="0.707107 -0.707107 0 0" class="visual" material="orange" />
-                <!-- <geom mesh="right_finger" pos="0 -0.1007 -0.0131" quat="0.707107 -0.707107 0 0" class="collision" /> -->
+                <geom mesh="right_finger" pos="0 -0.1007 -0.0131" quat="0.707107 -0.707107 0 0" conaffinity="1" contype="0" solref="0.02 1" friction="1 0.005 0.0001" condim="4" class="collision" name="right_finger_collision" />
 
                 <body name="right_finger_tip" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
                     <inertial pos="0 0 0" mass="0.01" diaginertia="0.01 0.01 0.01" />
-                    <geom size="0.024 0.004 0.012" pos="0 -0.003 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="right_finger_pad_collision"/>
+                    <geom size="0.024 0.004 0.012" pos="0 -0.005 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="right_finger_pad_collision"/>
                 </body>
             </body>
 
