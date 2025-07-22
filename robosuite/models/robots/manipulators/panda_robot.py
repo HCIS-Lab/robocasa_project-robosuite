@@ -26,7 +26,7 @@ class Panda(ManipulatorModel):
 
     @property
     def default_gripper(self):
-        return {"right": "PandaGripper"}
+        return {"right": "UMIGripper"}
 
     @property
     def default_controller_config(self):

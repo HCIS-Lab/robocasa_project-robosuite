@@ -1,0 +1,117 @@
+<mujoco model="umi_gripper">
+
+    <default>
+        <default class="finger_slide">
+            <joint type="slide" damping="100" frictionloss="1.0" armature="1.0" range="0 0.05" />
+        </default>
+        <default class="visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="1" />
+        </default>
+        <default class="collision">
+            <geom type="mesh" group="0" />
+        </default>
+    </default>
+
+    <asset>
+        <mesh name="wsg50" file="meshes/umi_gripper/wsg50.stl"/>
+        <mesh name="wsg50_left" file="meshes/umi_gripper/wsg50_left.stl"/>
+        <mesh name="wsg50_right" file="meshes/umi_gripper/wsg50_right.stl"/>
+        <mesh name="gripper_mount" file="meshes/umi_gripper/gripper_mount.stl"/>
+        <mesh name="left_finger_holder" file="meshes/umi_gripper/left_finger_holder.stl"/>
+        <mesh name="right_finger_holder" file="meshes/umi_gripper/right_finger_holder.stl"/>
+        <mesh name="left_finger" file="meshes/umi_gripper/left_finger.stl"/>
+        <mesh name="right_finger" file="meshes/umi_gripper/right_finger.stl"/>
+        <mesh name="gopro" file="meshes/umi_gripper/gopro.stl"/>
+
+        <material name="mirror" rgba="0 0 0 1" texrepeat="5 5" reflectance="1.0" />
+        <material name="gray" rgba="0.498039 0.498039 0.498039 1" />
+        <material name="yellow" rgba="0.980392 0.713725 0.00392157 1" />
+        <material name="orange" rgba="0.92 0.68 0.24 1" />
+    </asset>
+
+    <actuator>
+        <position ctrllimited="true" ctrlrange="0 0.05" kp="1000" tendon="split" name="fingers_actuator" forcelimited="true" forcerange="-20 20" />
+    </actuator>
+    <tendon>
+        <fixed name="split">
+            <joint joint="right_finger_joint" coef="0.5" />
+            <joint joint="left_finger_joint" coef="0.5" />
+        </fixed>
+    </tendon>
+
+    <worldbody>
+        <!-- <body quat="0 0 0.707107 -0.707107" pos="0 0 0"> -->
+        <body quat="0 0.707107 -0.707107 0" pos="0 0 0">
+            <!-- TODO inertial -->
+            <site name="ft_frame" pos="0 0.047 0.0296" size="0.01 0.01 0.01" rgba="1 0 0 1" type="sphere" group="1"/>
+            <!-- Gripper Camera -->
+            <camera name="gripper_gopro" pos="-0.00275 -0.0315 0.086" quat="0 0 0.707107 0.707107" mode="fixed" fovy="155" />
+
+            <!-- Base Link -->
+            <geom mesh="wsg50" class="visual" rgba="0.501961 0.501961 0.501961 1" />
+            <!-- <geom mesh="wsg50" class="collision" /> -->
+
+            <!-- Mirrors -->
+            <geom name="left_mirror" type="box" pos="-0.0694805 -0.0629165 0.059" size="0.03 0.0187 0.0001"
+                quat="0.587938 0.587938 0.392847 0.392847" material="mirror" class="visual" />
+            <geom name="right_mirror" type="box" pos="0.0694805 -0.0629165 0.059" size="0.03 0.0187 0.0001"
+                quat="0.392847 0.392847 0.587938 0.587938" material="mirror" class="visual" />
+
+            <!-- This site was added for visualization. -->
+            <!-- <body name="eef" pos="0 -0.18 0" quat="0 0 -0.707107 0.707107"> -->
+            <body name="eef" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
+                <site name="grip_site" pos="0 0 0" size="0.01 0.01 0.01" rgba="1 0 0 0.5" type="sphere" group="1"/>
+                <site name="ee_x" pos="0.1 0 0" size="0.005 .1"  quat="0.707105  0 0.707108 0 " rgba="1 0 0 0" type="cylinder" group="1"/>
+                <site name="ee_y" pos="0 0.1 0" size="0.005 .1" quat="0.707105 0.707108 0 0" rgba="0 1 0 0" type="cylinder" group="1"/>
+                <site name="ee_z" pos="0 0 0.1" size="0.005 .1" quat="1 0 0 0" rgba="0 0 1 0" type="cylinder" group="1"/>
+                <!-- This site was added for visualization. -->
+                <site name="grip_site_cylinder" pos="0 0 0" size="0.005 10" rgba="0 1 0 0.3" type="cylinder" group="1"/>
+            </body>
+
+            <!-- gripper mount -->
+            <geom mesh="gripper_mount" class="visual" material="yellow"/>
+            <!-- <geom mesh="gripper_mount" class="collision" /> -->
+
+            <!-- GoPro Camera -->
+            <geom pos="-0.02265 -0.0049 0.07685" quat="1 0 0 0" mesh="gopro" class="visual" rgba="0.101961 0.101961 0.101961 1" />
+            <!-- <geom pos="-0.02265 -0.0049 0.07685" quat="1 0 0 0" mesh="gopro" class="collision" /> -->
+
+            <!-- Left Finger -->
+            <body name="left_finger_holder" quat="1 0 0 0">
+                <joint name="left_finger_joint" axis="-1 0 0" class="finger_slide" />
+                <geom mesh="wsg50_left" class="visual" rgba="0.752941 0.752941 0.752941 1" />
+                <!-- <geom mesh="wsg50_left" class="collision" /> -->
+                <geom mesh="left_finger_holder" class="visual" material="gray" />
+                <!-- <geom mesh="left_finger_holder" class="collision" /> -->
+                <geom mesh="left_finger" pos="0 -0.1007 0.0127" quat="-0 -0 0.707107 0.707107" class="visual" material="orange" />
+                <geom mesh="left_finger" pos="0 -0.1007 0.0127" quat="-0 -0 0.707107 0.707107" conaffinity="1" contype="0" solref="0.02 1" friction="1 0.005 0.0001" condim="4" class="collision" name="left_finger_collision" />
+                
+                <body name="left_finger_tip" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
+                    <inertial pos="0 0 0" mass="0.01" diaginertia="0.01 0.01 0.01" />
+                    <geom size="0.024 0.004 0.012" pos="0 0.005 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="left_finger_pad_collision"/>
+                </body>
+            </body>
+
+            <!-- Right Finger -->
+            <body name="right_finger_holder" quat="1 0 0 0">
+                <joint name="right_finger_joint" axis="1 0 0" class="finger_slide" />
+                <geom mesh="wsg50_right" class="visual" rgba="0.752941 0.752941 0.752941 1" />
+                <!-- <geom mesh="wsg50_right" class="collision" /> -->
+                <geom mesh="right_finger_holder" class="visual" material="gray" />
+                <!-- <geom mesh="right_finger_holder" class="collision" /> -->
+                <geom mesh="right_finger" pos="0 -0.1007 -0.0131" quat="0.707107 -0.707107 0 0" class="visual" material="orange" />
+                <geom mesh="right_finger" pos="0 -0.1007 -0.0131" quat="0.707107 -0.707107 0 0" conaffinity="1" contype="0" solref="0.02 1" friction="1 0.005 0.0001" condim="4" class="collision" name="right_finger_collision" />
+
+                <body name="right_finger_tip" pos="0 -0.18 0" quat="0 0.707107 -0.707107 0">
+                    <inertial pos="0 0 0" mass="0.01" diaginertia="0.01 0.01 0.01" />
+                    <geom size="0.024 0.004 0.012" pos="0 -0.005 0" type="box" group="0" solref="0.01 0.5" friction = "2 0.05 0.0001" conaffinity="1" contype="1" name="right_finger_pad_collision"/>
+                </body>
+            </body>
+
+        </body>
+    </worldbody>
+    <sensor>
+        <force name="force_ee" site="ft_frame"/>
+        <torque name="torque_ee" site="ft_frame"/>
+    </sensor>
+</mujoco>
